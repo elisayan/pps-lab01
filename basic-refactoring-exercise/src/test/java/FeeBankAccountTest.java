@@ -20,11 +20,11 @@ public class FeeBankAccountTest {
         this.account = new FeeBankAccount(this.holder, INITIAL_BALANCE);
     }
 
-    private void depositAmount(final int id) {
+    private void depositAs(final int id) {
         this.account.deposit(id, DEPOSIT_AMOUNT);
     }
 
-    private void withdrawAmount(final int id) {
+    private void withdrawAs(final int id) {
         this.account.withdraw(id, WITHDRAW_AMOUNT);
     }
 
@@ -35,27 +35,27 @@ public class FeeBankAccountTest {
 
     @Test
     void shouldIncreaseBalanceWhenDepositIsValid() {
-        depositAmount(this.holder.id());
+        depositAs(this.holder.id());
         assertEquals(DEPOSIT_AMOUNT, this.account.getBalance());
     }
 
     @Test
     void shouldMaintainBalanceWhenSecondaryDepositFails() {
-        depositAmount(this.holder.id());
-        depositAmount(INVALID_HOLDER_ID);
+        depositAs(this.holder.id());
+        depositAs(INVALID_HOLDER_ID);
         assertEquals(DEPOSIT_AMOUNT, this.account.getBalance());
     }
 
     @Test
     void shouldApplyFeeWhenWithdrawalIsValid() {
-        depositAmount(this.holder.id());
-        withdrawAmount(this.holder.id());
+        depositAs(this.holder.id());
+        withdrawAs(this.holder.id());
         assertEquals(DEPOSIT_AMOUNT - WITHDRAW_AMOUNT - FeeBankAccount.FEE_AMOUNT, this.account.getBalance());
     }
 
     @Test
     void shouldNotWithdrawWhenBalanceDoesNotCoverAmountPlusFee(){
-        withdrawAmount(this.holder.id());
+        withdrawAs(this.holder.id());
         assertEquals(INITIAL_BALANCE, this.account.getBalance());
     }
 }

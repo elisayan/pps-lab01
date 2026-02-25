@@ -1,5 +1,4 @@
 import example.model.AccountHolder;
-import example.model.BankAccount;
 import example.model.SimpleBankAccount;
 
 import org.junit.jupiter.api.*;
@@ -12,44 +11,55 @@ import static org.junit.jupiter.api.Assertions.*;
 class SimpleBankAccountTest {
 
     private AccountHolder accountHolder;
-    private BankAccount bankAccount;
+    private SimpleBankAccount bankAccount;
     private static final double INITIAL_BALANCE = 0;
+    private static final double DEPOSIT_AMOUNT = 100;
+    private static final double WITHDRAW_AMOUNT = 70;
+    private static final int INVALID_HOLDER_ID = 2;
 
     @BeforeEach
     void beforeEach() {
-        accountHolder = new AccountHolder("Mario", "Rossi", 1);
-        bankAccount = new SimpleBankAccount(accountHolder, INITIAL_BALANCE);
+        this.accountHolder = new AccountHolder("Mario", "Rossi", 1);
+        this.bankAccount = new SimpleBankAccount(this.accountHolder, INITIAL_BALANCE);
+    }
+
+    private void depositAs(final int id) {
+        this.bankAccount.deposit(id, DEPOSIT_AMOUNT);
+    }
+
+    private void withdrawAs(final int id) {
+        this.bankAccount.withdraw(id, WITHDRAW_AMOUNT);
     }
 
     @Test
-    void testInitialBalance() {
-        assertEquals(INITIAL_BALANCE, bankAccount.getBalance());
+    void shouldHaveInitialBalance() {
+        assertEquals(INITIAL_BALANCE, this.bankAccount.getBalance());
     }
 
     @Test
-    void testDeposit() {
-        bankAccount.deposit(accountHolder.id(), 100);
-        assertEquals(100, bankAccount.getBalance());
+    void shouldAcceptValidDeposit() {
+        depositAs(this.accountHolder.id());
+        assertEquals(DEPOSIT_AMOUNT, this.bankAccount.getBalance());
     }
 
     @Test
-    void testWrongDeposit() {
-        bankAccount.deposit(accountHolder.id(), 100);
-        bankAccount.deposit(2, 50);
-        assertEquals(100, bankAccount.getBalance());
+    void shouldMaintainBalanceOnUnauthorizedDeposit() {
+        depositAs(this.accountHolder.id());
+        depositAs(INVALID_HOLDER_ID);
+        assertEquals(DEPOSIT_AMOUNT, this.bankAccount.getBalance());
     }
 
     @Test
-    void testWithdraw() {
-        bankAccount.deposit(accountHolder.id(), 100);
-        bankAccount.withdraw(accountHolder.id(), 70);
-        assertEquals(30 - SimpleBankAccount.FEE_AMOUNT, bankAccount.getBalance());
+    void shouldDecreaseBalanceOnValidWithdrawal() {
+        depositAs(this.accountHolder.id());
+        withdrawAs(this.accountHolder.id());
+        assertEquals(DEPOSIT_AMOUNT - WITHDRAW_AMOUNT, this.bankAccount.getBalance());
     }
 
     @Test
-    void testWrongWithdraw() {
-        bankAccount.deposit(accountHolder.id(), 100);
-        bankAccount.withdraw(2, 70);
-        assertEquals(100, bankAccount.getBalance());
+    void shouldIgnoreUnauthorizedWithdrawal() {
+        depositAs(this.accountHolder.id());
+        withdrawAs(INVALID_HOLDER_ID);
+        assertEquals(DEPOSIT_AMOUNT, this.bankAccount.getBalance());
     }
 }
