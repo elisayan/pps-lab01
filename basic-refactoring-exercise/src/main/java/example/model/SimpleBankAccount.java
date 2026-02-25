@@ -13,11 +13,11 @@ public class SimpleBankAccount extends AbstractBankAccount {
 
     @Override
     protected boolean isWithdrawAllowed(final double amount){
-        return getBalance() >= amount;
+        return this.getBalance() >= amount;
     }
 
     @Override
     protected void applyWithdrawal(final double amount) {
-        decreaseBalance(amount);
+        this.decreaseBalance(amount);
     }
 }
