@@ -23,6 +23,12 @@ public class SmartDoorLockTest {
         this.lock.lock();
     }
 
+    private void makeLockBlocked(int lock, SmartDoorLock lock1) {
+        for (int i = 0; i < lock; i++) {
+            lock1.unlock(WRONG_PIN);
+        }
+    }
+
     @Test
     void doorShouldBeUnlockedAfterCreation() {
         assertFalse(this.lock.isLocked());
@@ -50,10 +56,10 @@ public class SmartDoorLockTest {
     @Test
     void shouldUnlockAfterDigitCorrectPin() {
         this.setValidPin();
-        lock.unlock(VALID_PIN);
+        this.lock.unlock(VALID_PIN);
 
-        assertFalse(lock.isLocked());
-        assertEquals(0, lock.getFailedAttempts());
+        assertFalse(this.lock.isLocked());
+        assertEquals(0, this.lock.getFailedAttempts());
     }
 
     @Test
@@ -61,16 +67,14 @@ public class SmartDoorLockTest {
         this.setValidPin();
         int initial = this.lock.getFailedAttempts();
         this.lock.unlock(WRONG_PIN);
-        assertTrue(lock.isLocked());
+        assertTrue(this.lock.isLocked());
         assertEquals(initial + 1, this.lock.getFailedAttempts());
     }
 
     @Test
     void shouldBlockAfterMaxFailedAttempts() {
         this.setValidPin();
-        for (int i = 0; i < this.lock.getMaxAttempts(); i++) {
-            this.lock.unlock(WRONG_PIN);
-        }
+        this.makeLockBlocked(this.lock.getMaxAttempts(), this.lock);
         assertTrue(this.lock.isBlocked());
         assertTrue(this.lock.isLocked());
     }
@@ -78,27 +82,21 @@ public class SmartDoorLockTest {
     @Test
     void shouldNotUnlockWhenBlocked() {
         this.setValidPin();
-        for (int i = 0; i < this.lock.getMaxAttempts(); i++) {
-            this.lock.unlock(WRONG_PIN);
-        }
+        this.makeLockBlocked(this.lock.getMaxAttempts(), this.lock);
 
-        lock.unlock(VALID_PIN);
+        this.lock.unlock(VALID_PIN);
         assertTrue(this.lock.isLocked());
         assertTrue(this.lock.isBlocked());
     }
 
     @Test
     void shouldResetCompletely(){
-        lock.setPin(VALID_PIN);
-        lock.lock();
-        for (int i = 0; i < lock.getMaxAttempts() - 1; i++) {
-            lock.unlock(WRONG_PIN);
-        }
+        this.setValidPin();
+        this.makeLockBlocked(this.lock.getMaxAttempts() - 1, this.lock);
+        this.lock.reset();
 
-        lock.reset();
-
-        assertFalse(lock.isLocked());
-        assertFalse(lock.isBlocked());
-        assertEquals(0, lock.getFailedAttempts());
+        assertFalse(this.lock.isLocked());
+        assertFalse(this.lock.isBlocked());
+        assertEquals(0, this.lock.getFailedAttempts());
     }
 }
