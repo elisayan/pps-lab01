@@ -1,5 +1,10 @@
 package example.model;
 
+/**
+ * This class represent a particular instance of a BankAccount
+ * In particular, a Fee Bank Account applies a fixed fee on each withdrawal operation
+ * The withdrawal is allowed only if the balance is greater or equal the withdrawal amount plus the fee
+ */
 public class FeeBankAccount extends AbstractBankAccount {
 
     public static final double FEE_AMOUNT = 1.0;

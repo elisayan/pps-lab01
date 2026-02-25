@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * The test suite for testing the FeeBankAccount implementation
+ */
 public class FeeBankAccountTest {
 
     private AccountHolder holder;

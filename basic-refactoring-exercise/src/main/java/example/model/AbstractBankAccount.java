@@ -1,5 +1,10 @@
 package example.model;
 
+/**
+ * This abstract class provides a base implementation of a BankAccount
+ * It handles common operations like deposit, balance management, and user validation
+ * Subclasses must define specific withdrawal policies
+ */
 abstract class AbstractBankAccount implements BankAccount {
 
     private double balance;
