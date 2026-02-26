@@ -19,23 +19,18 @@ public class CircularQueueImpl implements CircularQueue {
 
     @Override
     public void enqueue(int value) {
-        this.elements[this.tail] = value;
-
         if (this.isFull()) {
             this.head = (this.head + 1) % this.elements.length;
         } else {
             this.size++;
         }
-
+        this.elements[this.tail] = value;
         this.tail = (this.tail + 1) % this.elements.length;
     }
 
     @Override
     public int dequeue() {
-        if (this.isEmpty()) {
-            throw new IllegalStateException("Queue is empty");
-        }
-
+        this.checkNotEmpty();
         int value = this.elements[head];
         this.head = (this.head + 1) % this.elements.length;
         this.size--;
@@ -44,9 +39,7 @@ public class CircularQueueImpl implements CircularQueue {
 
     @Override
     public int peek() {
-        if (this.isEmpty()) {
-            throw new IllegalStateException("Queue is empty");
-        }
+        this.checkNotEmpty();
         return this.elements[this.head];
     }
 
@@ -68,5 +61,9 @@ public class CircularQueueImpl implements CircularQueue {
     @Override
     public int capacity() {
         return this.elements.length;
+    }
+
+    private void checkNotEmpty() {
+        if (isEmpty()) throw new IllegalStateException("Queue is empty");
     }
 }
