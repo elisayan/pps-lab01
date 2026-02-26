@@ -1,5 +1,8 @@
 package tdd;
 
+/**
+ * Implementation of a smart door lock with PIN protection
+ */
 public class SmartDoorLockImpl implements SmartDoorLock {
 
     public static final int MAX_ATTEMPTS = 3;
