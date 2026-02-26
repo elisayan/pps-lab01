@@ -38,7 +38,7 @@ public class MinMaxStackImpl implements MinMaxStack {
 
     @Override
     public int pop() {
-        if (isEmpty()) {
+        if (this.isEmpty()) {
             throw new IllegalStateException("Cannot pop from empty stack");
         }
 
@@ -51,7 +51,7 @@ public class MinMaxStackImpl implements MinMaxStack {
 
     @Override
     public int peek() {
-        if (isEmpty()) {
+        if (this.isEmpty()) {
             throw new IllegalStateException("Cannot peek empty stack");
         }
         return this.stack.get(this.stack.size() - 1);
@@ -59,7 +59,7 @@ public class MinMaxStackImpl implements MinMaxStack {
 
     @Override
     public int getMin() {
-        if (isEmpty()) {
+        if (this.isEmpty()) {
             throw new IllegalStateException("Cannot get min from empty stack");
         }
         return this.minStack.get(this.minStack.size() - 1);
@@ -67,7 +67,7 @@ public class MinMaxStackImpl implements MinMaxStack {
 
     @Override
     public int getMax() {
-        if (isEmpty()) {
+        if (this.isEmpty()) {
             throw new IllegalStateException("Cannot get max from empty this.stack");
         }
         return this.maxStack.get(this.maxStack.size() - 1);

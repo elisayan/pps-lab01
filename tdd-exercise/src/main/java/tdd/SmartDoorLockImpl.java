@@ -11,10 +11,10 @@ public class SmartDoorLockImpl implements SmartDoorLock {
 
     @Override
     public void setPin(int pin) {
-        if (isLocked()) {
+        if (this.isLocked()) {
             throw new IllegalStateException("Cannot set PIN while locked");
         }
-        if (isBlocked()) {
+        if (this.isBlocked()) {
             throw new IllegalStateException("Cannot set PIN while blocked");
         }
         if (String.valueOf(pin).length() != PIN_LENGTH) {
